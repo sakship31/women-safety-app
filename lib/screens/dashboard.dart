@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:safety_app/services/authservice.dart';
@@ -8,6 +9,7 @@ import 'package:sms/sms.dart';
 import './contacts.dart';
 import '../models/contactModel.dart';
 import '../services/storage.dart';
+import 'package:audioplayers/audio_cache.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -18,6 +20,10 @@ class _DashboardPageState extends State<DashboardPage> {
   var dbHelper = Storage();
   List<ContactModel> contacts;
 
+AudioCache cache = AudioCache();
+AudioPlayer player = AudioPlayer();
+
+  bool isPlaying = false;
   static const platform = const MethodChannel('sendSms');
 
   Future<Position> getCurrentLocation() async {
@@ -26,6 +32,14 @@ class _DashboardPageState extends State<DashboardPage> {
     print(position.latitude);
     return position;
   }
+
+  void _playFile() async{
+  player = await cache.loop('audio/note1.wav'); // assign player here
+}
+
+void _stopFile() {
+  player?.stop(); // stop the file like this
+}
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +82,8 @@ class _DashboardPageState extends State<DashboardPage> {
                   SafeArea(
                     child: InkWell(
                       onTap: () async {
-                       
                         Position position = await getCurrentLocation();
-                         print("Pressed");
+                        print("Pressed");
                         contacts = await dbHelper.getContacts();
                         print(contacts[0].number);
                         SmsSender sender = new SmsSender();
@@ -155,8 +168,33 @@ class _DashboardPageState extends State<DashboardPage> {
                           //color:Colors.white
                         )),
                   ),
-
-                  SizedBox(height: 50),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      if(isPlaying){
+                        _stopFile();
+                        isPlaying=false;
+                      }
+                      else{
+                        _playFile();
+                        isPlaying=true;
+                      }
+                    },
+                    child: Container(
+                        child: Center(
+                            child: Text("Distress Alarm",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ))),
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(50),
+                          //color:Colors.white
+                        )),
+                  ),
+                  SizedBox(height: 20),
                   InkWell(
                     onTap: () {
                       AuthService().signOut();

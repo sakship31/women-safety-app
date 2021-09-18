@@ -25,6 +25,7 @@ dependencies:
   sqflite:
   path:
   geolocator: ^5.3.2+2
+  audioplayers: ^0.16.1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -51,6 +52,8 @@ flutter:
    - assets/images/back.jpg
    - assets/images/logo.png
    - assets/images/button.jpg
+   - assets/audio/note1.wav
+   - assets/audio/female_scream.mp3
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
