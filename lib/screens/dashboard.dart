@@ -1,6 +1,9 @@
+// import 'dart:html';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:safety_app/screens/hospitals.dart';
 import 'package:safety_app/services/authservice.dart';
 import 'dart:async';
 import 'package:flutter/widgets.dart';
@@ -19,9 +22,8 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   var dbHelper = Storage();
   List<ContactModel> contacts;
-
-AudioCache cache = AudioCache();
-AudioPlayer player = AudioPlayer();
+  AudioCache cache = AudioCache();
+  AudioPlayer player = AudioPlayer();
 
   bool isPlaying = false;
   static const platform = const MethodChannel('sendSms');
@@ -33,13 +35,13 @@ AudioPlayer player = AudioPlayer();
     return position;
   }
 
-  void _playFile() async{
-  player = await cache.loop('audio/note1.wav'); // assign player here
-}
+  void _playFile() async {
+    player = await cache.loop('audio/note1.wav'); // assign player here
+  }
 
-void _stopFile() {
-  player?.stop(); // stop the file like this
-}
+  void _stopFile() {
+    player?.stop(); // stop the file like this
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +78,101 @@ void _stopFile() {
             padding: EdgeInsets.all(30),
             child: Container(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  SizedBox(height: 100),
+                  // SizedBox(height: 100),
+                  Container(
+                    width: double.infinity,
+                    height: 60,
+                    // color: Colors.white,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          // color: Colors.red[900],
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  if (isPlaying) {
+                                    _stopFile();
+                                    isPlaying = false;
+                                  } else {
+                                    _playFile();
+                                    isPlaying = true;
+                                  }
+                                  setState(() {});
+                                },
+                                child: Icon(
+                                    isPlaying ? Icons.pause : Icons.play_arrow),
+                                // height: 50,
+                              ),
+                              Container(
+                                child: Text(
+                                  "Distress",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          // color: Colors.red[900],
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HospitalScreen()),
+                                  );
+                                },
+                                child: Icon(Icons.local_hospital),
+                                // height: 50,
+                              ),
+                              Container(
+                                child: Text(
+                                  "Hospitals",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          // color: Colors.red[900],
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () {},
+                                child: Icon(Icons.local_police),
+                                // height: 50,
+                              ),
+                              Container(
+                                child: Text(
+                                  "Police",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   SafeArea(
                     child: InkWell(
                       onTap: () async {
@@ -128,90 +222,92 @@ void _stopFile() {
                     ),
                   ),
 
-                  SizedBox(
-                    height: 120,
-                  ),
-                  Flexible(
-                    child: Container(),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ContactList()),
-                      );
-                    },
-                    child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          // crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              child: Icon(
-                                Icons.contacts,
-                                color: Colors.black,
-                              ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ContactList()),
+                          );
+                        },
+                        child: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              // crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  child: Icon(
+                                    Icons.contacts,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Center(
+                                    child: Text("Add Contacts",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ))),
+                              ],
                             ),
-                            SizedBox(width: 10),
-                            Center(
-                                child: Text("Add Contacts",
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(50),
+                              //color:Colors.white
+                            )),
+                      ),
+                      // SizedBox(height: 20),
+                      // InkWell(
+                      //   onTap: () {
+                      //     if (isPlaying) {
+                      //       _stopFile();
+                      //       isPlaying = false;
+                      //     } else {
+                      //       _playFile();
+                      //       isPlaying = true;
+                      //     }
+                      //   },
+                      //   child: Container(
+                      //       child: Center(
+                      //           child: Text("Distress Alarm",
+                      //               style: TextStyle(
+                      //                 fontWeight: FontWeight.bold,
+                      //               ))),
+                      //       // height: 50,
+                      //       decoration: BoxDecoration(
+                      //         color: Colors.white,
+                      //         border: Border.all(color: Colors.white),
+                      //         borderRadius: BorderRadius.circular(50),
+                      //         //color:Colors.white
+                      //       )),
+                      // ),
+                      SizedBox(height: 20),
+                      InkWell(
+                        onTap: () {
+                          AuthService().signOut();
+                        },
+                        child: Container(
+                            child: Center(
+                                child: Text("Sign Out",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ))),
-                          ],
-                        ),
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(50),
-                          //color:Colors.white
-                        )),
-                  ),
-                  SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      if(isPlaying){
-                        _stopFile();
-                        isPlaying=false;
-                      }
-                      else{
-                        _playFile();
-                        isPlaying=true;
-                      }
-                    },
-                    child: Container(
-                        child: Center(
-                            child: Text("Distress Alarm",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ))),
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(50),
-                          //color:Colors.white
-                        )),
-                  ),
-                  SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      AuthService().signOut();
-                    },
-                    child: Container(
-                        child: Center(
-                            child: Text("Sign Out",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ))),
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(50),
-                          //color:Colors.white
-                        )),
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(50),
+                              //color:Colors.white
+                            )),
+                      ),
+                    ],
                   ),
                   // RaisedButton(
                   //   child: Text("SignOut"),
