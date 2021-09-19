@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:safety_app/screens/hospitals.dart';
+import 'package:safety_app/screens/police.dart';
 import 'package:safety_app/services/authservice.dart';
 import 'dart:async';
 import 'package:flutter/widgets.dart';
@@ -83,7 +84,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   // SizedBox(height: 100),
                   Container(
                     width: double.infinity,
-                    height: 60,
+                    // height: 60,
                     // color: Colors.white,
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -155,7 +156,14 @@ class _DashboardPageState extends State<DashboardPage> {
                           child: Column(
                             children: [
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PoliceScreen(),
+                                    ),
+                                  );
+                                },
                                 child: Icon(Icons.local_police),
                                 // height: 50,
                               ),
