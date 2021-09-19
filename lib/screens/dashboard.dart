@@ -39,7 +39,7 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   void _playFile() async {
-    player = await cache.loop('audio/note1.wav'); // assign player here
+    player = await cache.loop('audio/female_scream.mp3'); // assign player here
   }
 
   void _stopFile() {
